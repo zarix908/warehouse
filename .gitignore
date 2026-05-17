@@ -1,0 +1,3 @@
+out/
+ansible/secrets.yml
+ansible/inventory/

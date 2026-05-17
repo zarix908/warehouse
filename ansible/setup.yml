@@ -1,0 +1,8 @@
+---
+- name: Setup warehouse
+  become: true
+  hosts: all
+  roles:
+    - configurator
+    - network
+    - aliases

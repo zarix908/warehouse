@@ -1,0 +1,16 @@
+---
+- name: Template inet-enable script
+  ansible.builtin.template:
+    src: inet-enable.j2
+    dest: /usr/local/bin/inet-enable
+    owner: root
+    group: root
+    mode: "0500"
+
+- name: Template inet-disable script
+  ansible.builtin.template:
+    src: inet-disable.j2
+    dest: /usr/local/bin/inet-disable
+    owner: root
+    group: root
+    mode: "0500"

@@ -1,0 +1,10 @@
+network:
+  ethernets:
+    {{ network_netplan_eth_iface }}:
+      match:
+        macaddress: {{ network_netplan_eth_mac }}
+      set-name: {{ network_netplan_eth_iface }}
+      dhcp4: true
+      dhcp4-overrides:
+        use-routes: false
+  version: 2

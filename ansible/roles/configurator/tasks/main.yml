@@ -1,0 +1,32 @@
+---
+- name: Ensure configurator etc directory exists
+  ansible.builtin.file:
+    path: "{{ configurator_etc_dir }}"
+    state: directory
+    owner: "{{ configurator_owner }}"
+    group: "{{ configurator_group }}"
+    mode: "0755"
+
+- name: Ensure configurator etc configs directory exists
+  ansible.builtin.file:
+    path: "{{ configurator_etc_configs_dir }}"
+    state: directory
+    owner: "{{ configurator_owner }}"
+    group: "{{ configurator_group }}"
+    mode: "0755"
+
+- name: Ensure warehouse bin directory exists
+  ansible.builtin.file:
+    path: "{{ warehouse_root }}/bin"
+    state: directory
+    owner: "{{ configurator_owner }}"
+    group: "{{ configurator_group }}"
+    mode: "0755"
+
+- name: Copy configurator binary
+  ansible.builtin.copy:
+    src: "{{ configurator_src }}"
+    dest: "{{ configurator_dest }}"
+    owner: "{{ configurator_owner }}"
+    group: "{{ configurator_group }}"
+    mode: "{{ configurator_mode }}"

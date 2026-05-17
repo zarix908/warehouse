@@ -1,0 +1,3 @@
+#!/bin/bash
+{{ warehouse_root }}/bin/configurator -c {{ network_netplan_dir }}/configurator.yml apply internet-disabled.yaml
+netplan apply

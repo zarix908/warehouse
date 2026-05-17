@@ -1,0 +1,32 @@
+---
+- name: Ensure network netplan configs directory exists
+  ansible.builtin.file:
+    path: "{{ network_netplan_dir }}"
+    state: directory
+    owner: "{{ network_owner }}"
+    group: "{{ network_group }}"
+    mode: "0755"
+
+- name: Template network configurator config
+  ansible.builtin.template:
+    src: configs/netplan/configurator.yml.j2
+    dest: "{{ network_netplan_dir }}/configurator.yml"
+    owner: "{{ network_owner }}"
+    group: "{{ network_group }}"
+    mode: "0644"
+
+- name: Template netplan internet-enabled config
+  ansible.builtin.template:
+    src: configs/netplan/internet-enabled.yaml.j2
+    dest: "{{ network_netplan_dir }}/internet-enabled.yaml"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: Template netplan internet-disabled config
+  ansible.builtin.template:
+    src: configs/netplan/internet-disabled.yaml.j2
+    dest: "{{ network_netplan_dir }}/internet-disabled.yaml"
+    owner: "root"
+    group: "root"
+    mode: "0600"

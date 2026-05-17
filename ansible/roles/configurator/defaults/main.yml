@@ -1,0 +1,8 @@
+---
+configurator_src: "{{ playbook_dir }}/../configurator/out/configurator"
+configurator_dest: "{{ warehouse_root }}/bin/configurator"
+configurator_owner: user
+configurator_group: user
+configurator_mode: "0755"
+configurator_etc_dir: "{{ warehouse_root }}/etc/configurator"
+configurator_etc_configs_dir: "{{ configurator_etc_dir }}/configs"

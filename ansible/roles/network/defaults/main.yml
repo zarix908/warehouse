@@ -1,0 +1,7 @@
+---
+network_owner: user
+network_group: user
+network_netplan_dir: "{{ warehouse_root }}/etc/configurator/configs/netplan"
+network_netplan_target: /etc/netplan/00-warehouse.yaml
+network_netplan_eth_iface: enp1s0f0
+network_netplan_wifi_iface: wlp2s0
