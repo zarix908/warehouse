@@ -14,3 +14,35 @@
     owner: root
     group: root
     mode: "0500"
+
+- name: Template main-mount script
+  ansible.builtin.template:
+    src: main-mount.j2
+    dest: /usr/local/bin/main-mount
+    owner: root
+    group: root
+    mode: "0500"
+
+- name: Template backup-mount script
+  ansible.builtin.template:
+    src: backup-mount.j2
+    dest: /usr/local/bin/backup-mount
+    owner: root
+    group: root
+    mode: "0500"
+
+- name: Template main-umount script
+  ansible.builtin.template:
+    src: main-umount.j2
+    dest: /usr/local/bin/main-umount
+    owner: root
+    group: root
+    mode: "0500"
+
+- name: Template backup-umount script
+  ansible.builtin.template:
+    src: backup-umount.j2
+    dest: /usr/local/bin/backup-umount
+    owner: root
+    group: root
+    mode: "0500"
