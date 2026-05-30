@@ -1,0 +1,9 @@
+---
+- name: Reload NFS exports
+  ansible.builtin.command: exportfs -ra
+  listen: Reload NFS exports
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  listen: Reload systemd daemon

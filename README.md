@@ -60,6 +60,7 @@ ansible-galaxy collection install -r ansible/requirements.yml
 | `network` | Installs netplan configs for the configurator and togglable internet-enabled/disabled profiles |
 | `aliases` | Installs helper scripts to `/usr/local/bin`: `inet-enable`, `inet-disable`, `main-mount`, `main-umount`, `backup-mount`, `backup-umount` |
 | `storage` | Creates LUKS encrypted drive mountpoints and registers them in `/etc/crypttab` and `/etc/fstab` |
+| `nfs` | Installs `nfs-kernel-server` and shares `/mnt/main/nfs`; service is disabled and must be started manually |
 
 ### Interactions
 
@@ -68,3 +69,51 @@ The `aliases` role is the consumer of all other roles — its scripts wire toget
 `inet-enable` and `inet-disable` depend on both `configurator` and `network`: they invoke the configurator binary (deployed by `configurator`) with the netplan config directory (deployed by `network`) to swap between the `internet-enabled.yaml` and `internet-disabled.yaml` profiles (also deployed by `network`), then call `netplan apply` to activate the change.
 
 `main-mount`, `backup-mount`, and their umount counterparts depend on `storage`: they open and close the LUKS crypt devices using names registered in `/etc/crypttab` by `storage`, and mount/unmount the decrypted partitions at the paths registered in `/etc/fstab` by `storage`.
+
+## NFS
+
+### Starting the service
+
+The `nfs-server` service is disabled and must be started manually after the storage is mounted:
+
+```bash
+sudo systemctl start nfs-server
+```
+
+If `/mnt/main/nfs` does not exist the service will refuse to start.
+
+### Mounting on a client
+
+Install the NFS client utilities first (required once per client machine):
+
+```bash
+sudo apt install nfs-common
+```
+
+**One-time:**
+
+```bash
+sudo mount -t nfs <server-ip>:/mnt/main/nfs /mnt/warehouse
+```
+
+**Persistent via `/etc/fstab`:**
+
+```
+<server-ip>:/mnt/main/nfs  /mnt/warehouse  nfs  nofail,noauto,x-systemd.automount  0  0
+```
+
+- `nofail` — boot succeeds even if the server is unreachable
+- `noauto,x-systemd.automount` — mounts on first access, not at boot
+
+Apply without rebooting:
+
+```bash
+sudo systemctl daemon-reload
+sudo mount /mnt/warehouse
+```
+
+**Unmount:**
+
+```bash
+sudo umount /mnt/warehouse
+```

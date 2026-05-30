@@ -1,0 +1,48 @@
+---
+- name: Assert NFS share directory exists
+  ansible.builtin.stat:
+    path: "{{ nfs_share_path }}"
+  register: nfs_share_stat
+
+- name: Fail if NFS share directory is missing
+  ansible.builtin.fail:
+    msg: "NFS share directory {{ nfs_share_path }} does not exist. Mount the storage first."
+  when: not nfs_share_stat.stat.exists or not nfs_share_stat.stat.isdir
+
+- name: Install nfs-kernel-server
+  ansible.builtin.apt:
+    name: nfs-kernel-server
+    state: present
+    update_cache: true
+
+- name: Configure /etc/exports
+  ansible.builtin.template:
+    src: exports.j2
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload NFS exports
+
+- name: Ensure nfs-server drop-in directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/system/nfs-server.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install systemd drop-in to check NFS share directory on start
+  ansible.builtin.template:
+    src: nfs-server-check.conf.j2
+    dest: /etc/systemd/system/nfs-server.service.d/check-share-dir.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd daemon
+
+- name: Disable and stop NFS service
+  ansible.builtin.systemd:
+    name: nfs-server
+    enabled: false
+    state: stopped

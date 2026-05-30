@@ -1,0 +1,2 @@
+[Service]
+ExecStartPre=/bin/sh -c 'test -d {{ nfs_share_path }} || { echo "NFS share directory {{ nfs_share_path }} does not exist"; exit 1; }'
