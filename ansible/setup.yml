@@ -2,6 +2,11 @@
 - name: Setup warehouse
   become: true
   hosts: all
+  pre_tasks:
+    - name: Load encrypted secrets
+      community.sops.load_vars:
+        file: "{{ playbook_dir }}/secrets.sops.yml"
+      no_log: true
   roles:
     - configurator
     - network

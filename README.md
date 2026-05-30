@@ -2,19 +2,54 @@
 
 ## Setup
 
-1. Copy and fill in secrets:
+### Prerequisites
+
+Install [age](https://github.com/FiloSottile/age) and [sops](https://github.com/getsops/sops), then install the Ansible collection:
+
+```bash
+ansible-galaxy collection install -r ansible/requirements.yml
+```
+
+### One-time key setup
+
+1. Generate an age key (keep it outside the repo):
    ```bash
-   cp ansible/secrets.yml.example ansible/secrets.yml
-   # edit ansible/secrets.yml with your values
+   mkdir -p ~/.config/sops/age
+   age-keygen -o ~/.config/sops/age/warehouse.age
    ```
 
-2. Run the playbook:
+2. Copy the public key printed by `age-keygen` and set it in [.sops.yaml](.sops.yaml):
+   ```yaml
+   age: age1REPLACE_WITH_YOUR_PUBLIC_KEY
+   ```
+
+### Create and encrypt secrets
+
+3. Copy the example, fill in your values, then encrypt in-place:
    ```bash
-   ansible-playbook ansible/setup.yml      
-      -i ansible/inventory/hosts.yml 
-      -e @ansible/secrets.yml 
-      --ask-pass
-      --ask-become-pass
+   cp ansible/secrets.yml.example ansible/secrets.sops.yml
+   # edit ansible/secrets.sops.yml with your values
+   SOPS_AGE_KEY_FILE=~/.config/sops/age/warehouse.age \
+     sops encrypt --in-place ansible/secrets.sops.yml
+   ```
+
+   To edit the encrypted file later:
+   ```bash
+   SOPS_AGE_KEY_FILE=~/.config/sops/age/warehouse.age \
+     sops ansible/secrets.sops.yml
+   ```
+
+   The encrypted file is safe to commit.
+
+### Run the playbook
+
+4. The `community.sops` vars plugin decrypts secrets automatically at runtime:
+   ```bash
+   SOPS_AGE_KEY_FILE=~/.config/sops/age/warehouse.age \
+   ansible-playbook ansible/setup.yml \
+     -i ansible/inventory/hosts.yml \
+     --ask-pass \
+     --ask-become-pass
    ```
 
 ## Roles

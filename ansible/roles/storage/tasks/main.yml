@@ -6,7 +6,7 @@
     owner: "{{ storage_owner }}"
     group: "{{ storage_group }}"
     mode: "0755"
-  loop: "{{ storage_drives }}"
+  loop: "{{ ansible_facts['storage_drives'] }}"
 
 - name: Ensure encrypted mountpoints exist
   ansible.builtin.file:
@@ -15,7 +15,7 @@
     owner: "{{ storage_owner }}"
     group: "{{ storage_group }}"
     mode: "0755"
-  loop: "{{ storage_drives }}"
+  loop: "{{ ansible_facts['storage_drives'] }}"
 
 - name: Configure crypttab for encrypted partitions
   ansible.builtin.lineinfile:
@@ -26,18 +26,18 @@
     owner: root
     group: root
     mode: "0640"
-  loop: "{{ storage_drives }}"
+  loop: "{{ ansible_facts['storage_drives'] }}"
 
 - name: Configure fstab for keys partitions
   ansible.builtin.lineinfile:
     path: /etc/fstab
     regexp: "^UUID={{ item.keys_part_uuid }}\\s"
     line: "UUID={{ item.keys_part_uuid }}\t{{ item.keys_mountpoint }}\t{{ item.fstype }}\tnofail\t0\t0"
-  loop: "{{ storage_drives }}"
+  loop: "{{ ansible_facts['storage_drives'] }}"
 
 - name: Configure fstab for encrypted partitions
   ansible.builtin.lineinfile:
     path: /etc/fstab
     regexp: "^/dev/mapper/{{ item.name }}_crypt\\s"
     line: "/dev/mapper/{{ item.name }}_crypt\t{{ item.mountpoint }}\t{{ item.fstype }}\tnofail,noauto\t0\t0"
-  loop: "{{ storage_drives }}"
+  loop: "{{ ansible_facts['storage_drives'] }}"
