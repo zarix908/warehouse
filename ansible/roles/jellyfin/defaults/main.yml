@@ -1,0 +1,9 @@
+---
+jellyfin_dir: "{{ warehouse_root }}/jellyfin"
+jellyfin_config_location: "{{ warehouse_root }}/jellyfin/config"
+jellyfin_cache_location: "{{ warehouse_root }}/jellyfin/cache"
+jellyfin_media_location: "{{ main_mount }}/media"
+jellyfin_version: "10.10.7"
+jellyfin_port: 8096
+jellyfin_uid: 1000
+jellyfin_gid: 1000

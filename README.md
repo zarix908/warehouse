@@ -60,9 +60,10 @@ ansible-galaxy collection install -r ansible/requirements.yml
 | `network` | Installs netplan configs for the configurator and togglable internet-enabled/disabled profiles |
 | `aliases` | Installs helper scripts to `/usr/local/bin`: `inet-enable`, `inet-disable`, `main-mount`, `main-umount`, `backup-mount`, `backup-umount` |
 | `storage` | Creates LUKS encrypted drive mountpoints and registers them in `/etc/crypttab` and `/etc/fstab` |
-| `nfs` | Installs `nfs-kernel-server` and shares `/mnt/main/nfs`; service is disabled and must be started manually |
+| `nfs` | Installs `nfs-kernel-server` and shares `{{ main_mount }}/nfs`; service is disabled and must be started manually |
 | `docker` | Installs Docker Engine and the Compose plugin from the official Docker apt repository; enables the `docker` service |
 | `immich` | Deploys Immich photo management stack via Docker Compose — creates its directory and writes `docker-compose.yml` and `.env` from templates |
+| `jellyfin` | Deploys Jellyfin media server via Docker Compose — creates config and cache directories and writes `docker-compose.yml` from a template; media is served from `{{ main_mount }}/media` |
 
 ### Interactions
 
@@ -82,7 +83,7 @@ The `nfs-server` service is disabled and must be started manually after the stor
 sudo systemctl start nfs-server
 ```
 
-If `/mnt/main/nfs` does not exist the service will refuse to start.
+If `{{ main_mount }}/nfs` does not exist the service will refuse to start.
 
 ### Mounting on a client
 

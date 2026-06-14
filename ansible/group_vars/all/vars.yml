@@ -1,3 +1,4 @@
 ---
 warehouse_root: /opt/warehouse
 warehouse_owner: user
+main_mount: /mnt/main

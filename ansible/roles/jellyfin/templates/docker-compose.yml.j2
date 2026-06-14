@@ -1,0 +1,17 @@
+# https://jellyfin.org/docs/general/installation/container
+
+name: jellyfin
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:{{ jellyfin_version }}
+    container_name: jellyfin
+    user: "{{ jellyfin_uid }}:{{ jellyfin_gid }}"
+    network_mode: host
+    volumes:
+      - {{ jellyfin_config_location }}:/config
+      - {{ jellyfin_cache_location }}:/cache
+      - type: bind
+        source: {{ jellyfin_media_location }}
+        target: /data/media
+    restart: "no"

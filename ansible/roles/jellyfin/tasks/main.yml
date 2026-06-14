@@ -1,0 +1,20 @@
+---
+- name: Create Jellyfin directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ warehouse_owner }}"
+    group: "{{ warehouse_owner }}"
+    mode: "0750"
+  loop:
+    - "{{ jellyfin_dir }}"
+    - "{{ jellyfin_config_location }}"
+    - "{{ jellyfin_cache_location }}"
+
+- name: Deploy Jellyfin docker-compose file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ jellyfin_dir }}/docker-compose.yml"
+    owner: "{{ warehouse_owner }}"
+    group: "{{ warehouse_owner }}"
+    mode: "0640"
