@@ -13,3 +13,5 @@
     - aliases
     - storage
     - nfs
+    - docker
+    - immich

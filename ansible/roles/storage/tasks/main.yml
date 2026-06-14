@@ -3,8 +3,8 @@
   ansible.builtin.file:
     path: "{{ item.keys_mountpoint }}"
     state: directory
-    owner: "{{ storage_owner }}"
-    group: "{{ storage_group }}"
+    owner: "{{ warehouse_owner }}"
+    group: "{{ warehouse_owner }}"
     mode: "0755"
   loop: "{{ ansible_facts['storage_drives'] }}"
 
@@ -12,8 +12,8 @@
   ansible.builtin.file:
     path: "{{ item.mountpoint }}"
     state: directory
-    owner: "{{ storage_owner }}"
-    group: "{{ storage_group }}"
+    owner: "{{ warehouse_owner }}"
+    group: "{{ warehouse_owner }}"
     mode: "0755"
   loop: "{{ ansible_facts['storage_drives'] }}"
 

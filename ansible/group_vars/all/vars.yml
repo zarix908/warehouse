@@ -1,2 +1,3 @@
 ---
 warehouse_root: /opt/warehouse
+warehouse_owner: user

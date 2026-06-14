@@ -61,6 +61,8 @@ ansible-galaxy collection install -r ansible/requirements.yml
 | `aliases` | Installs helper scripts to `/usr/local/bin`: `inet-enable`, `inet-disable`, `main-mount`, `main-umount`, `backup-mount`, `backup-umount` |
 | `storage` | Creates LUKS encrypted drive mountpoints and registers them in `/etc/crypttab` and `/etc/fstab` |
 | `nfs` | Installs `nfs-kernel-server` and shares `/mnt/main/nfs`; service is disabled and must be started manually |
+| `docker` | Installs Docker Engine and the Compose plugin from the official Docker apt repository; enables the `docker` service |
+| `immich` | Deploys Immich photo management stack via Docker Compose — creates its directory and writes `docker-compose.yml` and `.env` from templates |
 
 ### Interactions
 

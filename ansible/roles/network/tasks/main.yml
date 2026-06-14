@@ -3,16 +3,16 @@
   ansible.builtin.file:
     path: "{{ network_netplan_dir }}"
     state: directory
-    owner: "{{ network_owner }}"
-    group: "{{ network_group }}"
+    owner: "{{ warehouse_owner }}"
+    group: "{{ warehouse_owner }}"
     mode: "0755"
 
 - name: Template network configurator config
   ansible.builtin.template:
     src: configs/netplan/configurator.yml.j2
     dest: "{{ network_netplan_dir }}/configurator.yml"
-    owner: "{{ network_owner }}"
-    group: "{{ network_group }}"
+    owner: "{{ warehouse_owner }}"
+    group: "{{ warehouse_owner }}"
     mode: "0644"
 
 - name: Template netplan internet-enabled config
